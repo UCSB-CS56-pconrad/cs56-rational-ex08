@@ -24,7 +24,38 @@ public class Rational {
 	else
 	    return gcd(b%a, a);
     }
-    
+   
+	public static int lcm(int a, int b) {
+		return a * (b / gcd(a, b));
+	}
+	
+	public Rational plus(Rational r){
+		int lcm = lcm(this.denom, r.denom);
+		int numTot = lcm/this.denom * this.num + lcm/r.denom * r.num;
+		return new Rational(numTot, lcm);
+	}
+ 
+	public static Rational sum(Rational a, Rational b){
+		int lcm = lcm(a.denom, b.denom);
+		int numTot = lcm/a.denom * a.num + lcm/b.denom * b.num;
+		return new Rational(numTot, lcm);
+	}
+
+	public Rational minus(Rational r){
+		return sum(this, new Rational(-1 * r.num, r.denom));
+	}
+
+	public static Rational difference(Rational a, Rational b){
+		return sum(a, new Rational(-1 * r.num, r.denom));
+	}
+
+	public Rational reciprocalOf(){
+		if(this.num == 0){
+			throw new ArithmeticException("denominator may not be zero");
+		}
+		return new Rational(this.denom, this.num);
+	}
+
     public Rational() {
 	this.num = 1;
 	this.denom = 1;
@@ -62,6 +93,13 @@ public class Rational {
 			    a.denom * b.denom);
     }
 
+	public Rational dividedBy(Rational r){
+		return times(r.reciprocalOf());
+	}
+
+	public static Rational quotient(Rational a, Rational b){
+		return product(a, b.reciprocalOf());
+	}
     
     /** 
 	For testing getters.  
